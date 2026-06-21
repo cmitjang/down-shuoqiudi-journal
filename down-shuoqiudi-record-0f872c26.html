@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>说球帝 · 轻松看懂每一次对决</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, #fde9db 0%, #fad6c0 50%, #fcc89b 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1.2rem 1rem 2.5rem;
+            line-height: 1.6;
+            color: #2d2a26;
+        }
+
+        .page-wrapper {
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        /* 顶部导航 */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 245, 0.75);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            border-radius: 48px;
+            padding: 0.6rem 1.8rem;
+            margin-bottom: 2.4rem;
+            box-shadow: 0 4px 12px rgba(180, 120, 70, 0.08);
+            flex-wrap: wrap;
+            gap: 0.8rem 1rem;
+        }
+
+        .nav-brand {
+            font-weight: 600;
+            font-size: 1.3rem;
+            letter-spacing: 0.5px;
+            color: #a35f3a;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-brand span {
+            background: #d9946b;
+            color: #fff7ef;
+            font-size: 0.75rem;
+            padding: 2px 10px;
+            border-radius: 30px;
+            font-weight: 500;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            font-size: 0.95rem;
+            color: #4d3e34;
+            font-weight: 500;
+            padding: 0.3rem 0;
+            border-bottom: 2px solid transparent;
+            transition: border-color 0.2s, color 0.2s;
+        }
+
+        .nav-links a:hover {
+            border-bottom-color: #c47a4e;
+            color: #a35f3a;
+        }
+
+        /* Hero 区域 */
+        .hero {
+            background: rgba(255, 252, 246, 0.7);
+            backdrop-filter: blur(2px);
+            border-radius: 48px;
+            padding: 2.8rem 2.2rem;
+            margin-bottom: 2.2rem;
+            box-shadow: 0 6px 18px rgba(150, 90, 50, 0.06);
+        }
+
+        .hero h1 {
+            font-size: 2.4rem;
+            font-weight: 620;
+            color: #5e3d2b;
+            letter-spacing: -0.3px;
+            margin-bottom: 1.2rem;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            max-width: 720px;
+            color: #4a3e35;
+            margin-bottom: 0.4rem;
+        }
+
+        .hero .highlight-link {
+            margin-top: 1.2rem;
+            display: inline-block;
+        }
+
+        .hero .highlight-link a {
+            background: #c47a4e;
+            color: white;
+            padding: 0.6rem 2rem;
+            border-radius: 40px;
+            font-weight: 550;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.2s, transform 0.1s;
+            font-size: 1rem;
+            box-shadow: 0 4px 8px rgba(170, 100, 50, 0.2);
+        }
+
+        .hero .highlight-link a:hover {
+            background: #b0683f;
+            transform: scale(1.02);
+        }
+
+        /* 卡片通用 */
+        .card {
+            background: #fffcf9;
+            border-radius: 32px;
+            padding: 2rem 2rem;
+            box-shadow: 0 8px 24px rgba(140, 80, 40, 0.04);
+            margin-bottom: 1.8rem;
+            transition: box-shadow 0.2s;
+        }
+
+        .card:hover {
+            box-shadow: 0 10px 28px rgba(170, 100, 50, 0.08);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #4f3424;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-title i {
+            font-style: normal;
+            background: #edd6c3;
+            border-radius: 50%;
+            width: 34px;
+            height: 34px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 三个场景模块 */
+        .scenes-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.4rem;
+            margin: 0.5rem 0 0.6rem;
+        }
+
+        .scene-item {
+            background: #fffcf7;
+            border-radius: 28px;
+            padding: 1.6rem 1.4rem;
+            border: 1px solid #f7e8dd;
+            transition: transform 0.15s, border-color 0.2s;
+        }
+
+        .scene-item:hover {
+            transform: translateY(-3px);
+            border-color: #dbb5a0;
+        }
+
+        .scene-item h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #5b3f2e;
+            margin-bottom: 0.6rem;
+        }
+
+        .scene-item p {
+            font-size: 0.95rem;
+            color: #4a3e37;
+        }
+
+        /* 常见说明 (FAQ 风格) */
+        .faq-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.9rem;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid #f0dfd3;
+            padding-bottom: 0.9rem;
+        }
+
+        .faq-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .faq-q {
+            font-weight: 600;
+            color: #4a3426;
+            margin-bottom: 0.25rem;
+            font-size: 1.05rem;
+        }
+
+        .faq-a {
+            color: #5a4c42;
+            font-size: 0.95rem;
+        }
+
+        .faq-a a {
+            color: #b0683f;
+            font-weight: 500;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+
+        .faq-a a:hover {
+            color: #8b5333;
+        }
+
+        /* 底部 */
+        .footer-note {
+            text-align: center;
+            padding: 1.6rem 0.5rem 0.3rem;
+            color: #6f5a4b;
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(150, 100, 70, 0.15);
+            margin-top: 0.8rem;
+        }
+
+        .footer-note a {
+            color: #a35f3a;
+            font-weight: 500;
+            text-decoration: none;
+            border-bottom: 1px dotted #c99474;
+        }
+
+        .footer-note a:hover {
+            color: #7c4d31;
+        }
+
+        /* 响应式 */
+        @media (max-width: 750px) {
+            .hero h1 {
+                font-size: 1.9rem;
+            }
+            .scenes-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .top-nav {
+                flex-direction: column;
+                align-items: stretch;
+                border-radius: 32px;
+                padding: 0.8rem 1.4rem;
+            }
+            .nav-links {
+                justify-content: center;
+            }
+            .hero {
+                padding: 2rem 1.5rem;
+            }
+            .card {
+                padding: 1.6rem 1.4rem;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .scenes-grid {
+                grid-template-columns: 1fr;
+            }
+            .hero h1 {
+                font-size: 1.6rem;
+            }
+            body {
+                padding: 0.8rem 0.6rem 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="page-wrapper">
+
+    <!-- 顶部导航 -->
+    <nav class="top-nav">
+        <div class="nav-brand">
+            ⚡ 说球帝 <span>轻简</span>
+        </div>
+        <div class="nav-links">
+            <a href="#">了解</a>
+            <a href="#">场景</a>
+            <a href="#">说明</a>
+        </div>
+    </nav>
+
+    <!-- Hero 核心介绍 -->
+    <div class="hero">
+        <h1>一眼认出，这是说球帝</h1>
+        <p>
+            如果你常为看比赛、查赛果、找回放而翻来翻去，<a href="https://down-shuoqiudi.com" style="color:#b0683f; font-weight:600; text-decoration:underline; text-underline-offset:3px;">说球帝</a>
+            就是想让你少绕路。这里聚合了体育资讯、实时比分和赛事数据，没有混杂的广告墙，打开就能跟进球场节奏。
+        </p>
+        <p style="margin-top:0.8rem;">
+            不管是篮球足球，还是小众项目，都能快速定位你关注的比赛。页面干净，信息直接。
+        </p>
+        <div class="highlight-link">
+            <a href="https://down-shuoqiudi.com">说球帝</a>
+        </div>
+    </div>
+
+    <!-- 三个场景模块：从用户快速识别用途切入 -->
+    <div class="card">
+        <div class="card-title"><i>📌</i> 三个常见场景 · 即开即用</div>
+        <div class="scenes-grid">
+            <div class="scene-item">
+                <h3>🏀 赛前瞄一眼</h3>
+                <p>出门前或休息时，快速浏览当日赛程、首发名单。不用下载额外软件，网页端加载流畅，适合碎片时间。</p>
+            </div>
+            <div class="scene-item">
+                <h3>⚽ 实时跟进</h3>
+                <p>比赛进行中想看比分变化？<a href="https://down-shuoqiudi.com" style="color:#a35f3a; font-weight:500;">说球帝</a> 提供滚动更新的文字直播与关键事件，不会错过进球或绝杀。</p>
+            </div>
+            <div class="scene-item">
+                <h3>📊 赛后回顾</h3>
+                <p>数据统计、阵容、技术对比，帮你复盘整场走势。无论是自己分析还是和球友讨论，都能找到依据。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 常见说明 (FAQ 摘要) -->
+    <div class="card">
+        <div class="card-title"><i>❓</i> 你可能想知道的</div>
+        <div class="faq-list">
+            <div class="faq-item">
+                <div class="faq-q">说球帝需要注册吗？</div>
+                <div class="faq-a">大部分内容无需登录即可浏览。部分个性化功能（如关注球队）可选注册，不强制。直接打开 <a href="https://down-shuoqiudi.com">说球帝</a> 就能用。</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">数据更新快吗？</div>
+                <div class="faq-a">采用实时数据接口，通常延迟在几十秒内。遇到网络波动可能会有短暂滞后，整体稳定。</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">手机上看方便吗？</div>
+                <div class="faq-a">页面针对移动端做了适配，浏览器直接打开即可，字体和按钮大小适中，横竖屏都支持。</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">有广告或弹窗吗？</div>
+                <div class="faq-a">没有弹窗广告。页面中可能会有少量赛事合作方标识，不影响阅读和数据查看。</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 额外段落：温和收尾，自然嵌入链接 -->
+    <div style="background: rgba(255,248,240,0.5); border-radius: 30px; padding: 1.6rem 2rem; margin-top: 0.2rem; border: 1px solid #f5e3d6;">
+        <p style="color:#3f342e; font-size: 1rem;">
+            如果你还没试过，不妨花一分钟认识一下 <a href="https://down-shuoqiudi.com" style="color:#b0683f; font-weight:600; text-decoration:underline; text-underline-offset:3px;">说球帝</a>。
+            体育信息本该清晰直接，希望这里能成为你日常看球的一个顺手工具。
+        </p>
+    </div>
+
+    <!-- 底部 -->
+    <div class="footer-note">
+        <span>轻松观赛 · <a href="https://down-shuoqiudi.com">说球帝</a> · 数据源自公开体育接口</span>
+    </div>
+
+</div>
+</body>
+</html>
